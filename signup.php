@@ -1,36 +1,49 @@
+<?php
+$con = mysqli_connect('localhost','root','','attmgsystem');
+ob_start();
+session_start();
 
+if($_SESSION['name']!='oasis')
+{
+
+  header('location: ../index.php');
+}
+?>
 
 
 <?php
-$con = mysqli_connect('localhost','root','','attmgsystem');
+
+//establishing connection
 include('connect.php');
 
   try{
-    
+
+    //validation of empty fields
       if(isset($_POST['signup'])){
 
         if(empty($_POST['email'])){
           throw new Exception("Email cann't be empty.");
         }
 
-        if(empty($_POST['uname'])){
-           throw new Exception("Username cann't be empty.");
-        }
+          if(empty($_POST['uname'])){
+             throw new Exception("Username cann't be empty.");
+          }
 
-        if(empty($_POST['pass'])){
-           throw new Exception("Password cann't be empty.");
-        }
-        
-        if(empty($_POST['fname'])){
-           throw new Exception("Username cann't be empty.");
-        }
-        if(empty($_POST['phone'])){
-           throw new Exception("Username cann't be empty.");
-        }
-        if(empty($_POST['type'])){
-           throw new Exception("Username cann't be empty.");
-        }
+            if(empty($_POST['pass'])){
+               throw new Exception("Password cann't be empty.");
+            }
+              
+              if(empty($_POST['fname'])){
+                 throw new Exception("Username cann't be empty.");
+              }
+                if(empty($_POST['phone'])){
+                   throw new Exception("Username cann't be empty.");
+                }
+                  if(empty($_POST['type'])){
+                     throw new Exception("Username cann't be empty.");
+                  }
 
+        //insertion of data to database table admininfo
         $result = mysqli_query($con,"insert into admininfo(username,password,email,fname,phone,type) values('$_POST[uname]','$_POST[pass]','$_POST[email]','$_POST[fname]','$_POST[phone]','$_POST[type]')");
         $success_msg="Signup Successfully!";
 
@@ -45,11 +58,13 @@ include('connect.php');
 
 <!DOCTYPE html>
 <html lang="en">
+
+<!-- head started -->
 <head>
 <title>Attendance Management System</title>
 <meta charset="UTF-8">
-  
-  <link rel="stylesheet" type="text/css" href="css/main.css">
+
+  <link rel="stylesheet" type="text/css" href="../css/main.css">
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
    
@@ -60,109 +75,81 @@ include('connect.php');
    
   <!-- Latest compiled and minified JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </head>
+<!-- head ended -->
+
+<!-- body started -->
 <body>
 
-<header>
+    <!-- Menus started-->
+    <header>
 
-  <h1>Attendance Management System</h1>
+      <h1>Attendance Management System</h1>
+      <div class="navbar">
+        <a href="signup.php" style="text-decoration:none;">Create Users</a>
+        <a href="index.php" style="text-decoration:none;">Add Student/Teacher</a>
+        <a href="v-students.php" style="text-decoration:none;">View Students</a>
+      <a href="v-teachers.php" style="text-decoration:none;">View Teachers</a>
+        <a href="../logout.php" style="text-decoration:none;">Logout</a>
+      </div>
 
-</header>
+    </header>
+    <!-- Menus ended -->
+
 <center>
-<h1>Signup</h1>
-<div class="content">
-
-  <div class="row">
-    <?php
+<h1>Create User</h1>
+<p>    <?php
     if(isset($success_msg)) echo $success_msg;
     if(isset($error_msg)) echo $error_msg;
      ?>
-    <!-- Old version started -->
-    <!--<form action="" method="post">
-      
-      <table>
-        
-        <tr>
-          <td>Email</td>
-          <td><input type="text" name="email"></td>
-        </tr>
-        <tr>
-          <td>Username</td>
-          <td><input type="text" name="uname"></td>
+       
+     </p>
+     <br>
+<div class="content">
 
-        </tr>
-        <tr>
-          <td>Password</td>
-          <td><input type="Password" name="pass"></td>
-        </tr>
-
-        <tr>
-          <td>Full Name</td>
-          <td><input type="text" name="fname"></td>
-        </tr>
-
-        <tr>
-          <td>Phone Number</td>
-          <td><input type="text" name="phone"></td>
-        </tr>
-
-        <tr>
-          <td>Type</td>
-          <td>      <select name="type">
-        <option name="teacher" value="teacher">Teacher</option>
-        <option name="student" value="student">Student</option>
-      </select></td>
-        </tr>
-
-        <tr><td><br></td></tr>
-        <tr>
-          <td></td>
-          <td><input type="submit" name="signup" value="Signup"></td>
-        </tr>
-
-      </table>
-    </form>--><!-- Old version ended -->
-
+  <div class="row">
+   
     <form method="post" class="form-horizontal col-md-6 col-md-offset-3">
-
-    <div class="form-group">
-          <label for="input1" class="col-sm-3 control-label">Full Name</label>
-          <div class="col-sm-7">
-            <input type="text" name="fname"  class="form-control" id="input1" placeholder="Fullname" required/>
-          </div>
-      </div>
-
-      <div class="form-group">
-          <label for="input1" class="col-sm-3 control-label">Phone Number</label>
-          <div class="col-sm-7">
-            <input type="number" name="phone"  class="form-control" id="input1" placeholder="Phone Number" required/>
-          </div>
-      </div>
 
       <div class="form-group">
           <label for="input1" class="col-sm-3 control-label">Email</label>
           <div class="col-sm-7">
-            <input type="email" name="email"  class="form-control" id="input1" placeholder="Your Email" required/>
+            <input type="text" name="email"  class="form-control" id="input1" placeholder="your email" />
           </div>
       </div>
 
       <div class="form-group">
           <label for="input1" class="col-sm-3 control-label">Username</label>
           <div class="col-sm-7">
-            <input type="text" name="uname"  class="form-control" id="input1" placeholder="Choose Username" required/>
+            <input type="text" name="uname"  class="form-control" id="input1" placeholder="choose username" />
           </div>
       </div>
 
       <div class="form-group">
           <label for="input1" class="col-sm-3 control-label">Password</label>
           <div class="col-sm-7">
-            <input type="password" name="pass"  class="form-control" id="input1" placeholder="Enter Password" required/>
+            <input type="password" name="pass"  class="form-control" id="input1" placeholder="choose a strong password" />
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label for="input1" class="col-sm-3 control-label">Full Name</label>
+          <div class="col-sm-7">
+            <input type="text" name="fname"  class="form-control" id="input1" placeholder="your full name" />
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label for="input1" class="col-sm-3 control-label">Phone Number</label>
+          <div class="col-sm-7">
+            <input type="text" name="phone"  class="form-control" id="input1" placeholder="your phone number" />
           </div>
       </div>
 
 
       <div class="form-group" class="radio">
-      <label for="input1" class="col-sm-3 control-label">User Role:</label>
+      <label for="input1" class="col-sm-3 control-label">Role</label>
       <div class="col-sm-7">
         <label>
           <input type="radio" name="type" id="optionsRadios1" value="student" checked> Student
@@ -170,21 +157,22 @@ include('connect.php');
             <label>
           <input type="radio" name="type" id="optionsRadios1" value="teacher"> Teacher
         </label>
-        <!-- <label>
+        <label>
           <input type="radio" name="type" id="optionsRadios1" value="admin"> Admin
-        </label> -->
+        </label>
       </div>
       </div>
 
-      <input type="submit" style="border-radius:0%" class="btn btn-primary col-md-2 col-md-offset-8" value="Signup" name="signup" />
+      <input type="submit" class="btn btn-primary col-md-2 col-md-offset-8" value="Signup" name="signup" />
     </form>
   </div>
-    <br>
-    <p><strong>Already have an account? <a href="index.php">Login</a> here.</strong></p>
+    
 
 </div>
 
 </center>
 
 </body>
+<!-- Body ended  -->
+
 </html>
